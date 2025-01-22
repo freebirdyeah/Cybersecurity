@@ -7,7 +7,7 @@ The challenge simply instructs us to write a simple assembly instruction to a fi
 
 I ran:-
 
-```
+```bash
 ~$ touch rax-challenge.s; echo "mov rax, 60" > rax-challenge.s
 ~$ /challenge/check rax-challenge.s
 
@@ -26,7 +26,7 @@ The challenge instructs us to write instructions which move `60` to `rax` signif
 
 I did this by:-
 
-```
+```bash
 ~$ echo "mov rax, 60" > rax-challenge.s
 ~$ echo "syscall" >> rax-challenge.s
 ~$ /challenge/check rax-challenge.s
@@ -44,7 +44,7 @@ Every program after running exits with an exit code, this challenge tells us tha
 I did this by:- 
 
 
-```
+```bash
 ~$ echo "mov rdi, 42" > rax-challenge.s
 ~$ echo "mov rax, 60" >> rax-challenge.s
 ~$ echo "syscall" >> rax-challenge.s
@@ -76,7 +76,7 @@ the second and third lines tell denote the entrypoint for the code when it's bei
 then we make an executable using:-
 
 
-```
+```bash
 ~$ as -o rax-challenge.o rax-challenge.s
 ~$ hacker@your-first-program~building-executables:~$ ld -o exe rax-challenge.o
 ~$ hacker@your-first-program~building-executables:~$ ./exe
@@ -119,7 +119,7 @@ We are told of another register called `rsi` where we can park data. Now a secre
 
 I edit the `rax-challenge.s` file to:-
 
-```
+```asm
 mov rdi, rsi
 mov rax, 60
 syscall
