@@ -71,15 +71,15 @@ syscall
 ```
 
 the first line tells the assembler we are using intel syntax.
-the second and third lines tell denote the entrypoint for the code when it's being executed.
+the second and third lines denote the entrypoint for the code when it's being executed.
 
 then we make an executable using:-
 
 
 ```bash
 ~$ as -o rax-challenge.o rax-challenge.s
-~$ hacker@your-first-program~building-executables:~$ ld -o exe rax-challenge.o
-~$ hacker@your-first-program~building-executables:~$ ./exe
+~$ ld -o exe rax-challenge.o
+~$ ./exe
 
 ```
 
