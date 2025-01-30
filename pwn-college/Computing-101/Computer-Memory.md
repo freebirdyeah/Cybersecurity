@@ -104,7 +104,7 @@ Similar to the previous one, this time our secret value is at some `SECRET_LOCAT
 
 ```asm
 
-mov rdi, [rax] ; gets SECRET_LOCATION_2 NOT 1! for 1: mov rdi, rax
+mov rdi, [rax] ; gets SECRET_LOCATION_1 NOT 2! for 2: mov rdi, rax
 mov rdi, [rdi] ; gets SECRET_VALUE
 mov rax, 60
 syscall
