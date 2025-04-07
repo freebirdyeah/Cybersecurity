@@ -327,3 +327,132 @@ mov qword ptr [0x404000], rbx
 flag: `pwn.college{cOH4wL7cJzUzL0qgyHlGTc4x-zx.01MwIDL2MDO0czW}`
 
 
+## byte-access
+
+- mov al, [address] <=> moves the least significant byte from address to rax
+- mov ax, [address] <=> moves the least significant word from address to rax
+- mov eax, [address] <=> moves the least significant double word from address to rax
+- mov rax, [address] <=> moves the full quad word from address to rax
+- moving into smaller register doesn't clear the upper bytes
+
+
+we need to set `rax` to the byte at `0x404000`, I assume the byte referred to is LSB because memory addresses are in little-endian (LSB first)
+
+code:-
+
+
+```asm
+xor rbx, rbx
+mov bl, [0x404000]
+
+xor rax, rax
+mov al, bl
+```
+
+flag: `pwn.college{IHx1e_9ra-flguDU4tNPfpxfMm_.dRTM4MDL2MDO0czW}`
+
+
+## memory-size-access
+
+
+Please perform the following:
+
+- Set `rax` to the byte at `0x404000`
+- Set `rbx` to the word at `0x404000`
+- Set `rcx` to the double word at `0x404000`
+- Set `rdx` to the quad word at `0x404000`
+
+
+code:-
+
+```asm
+xor rax, rax
+mov al, [0x404000]
+
+xor rbx, rbx
+mov bx, [0x404000]
+
+xor rcx, rcx
+mov ecx, [0x404000]
+
+xor rdx, rdx
+mov rdx, [0x404000]
+```
+
+`xor`ing is done to zero out the registers before doing anything
+
+flag: `pwn.college{Eqbc44MH6OUjkGGrjF0oB1WymEP.0FNwIDL2MDO0czW}`
+
+
+## little-endian-write
+
+If you examined how it actually looked in memory, you would see:
+
+```md
+
+[0x1330] = 0xde
+[0x1331] = 0xc0
+[0x1332] = 0xad
+[0x1333] = 0xde
+[0x1334] = 0x00
+[0x1335] = 0x00
+[0x1336] = 0x00
+[0x1337] = 0x00
+
+```
+
+This format of storing things in 'reverse' is intentional in x86, and it's called "Little Endian".
+
+Using the earlier mentioned info, perform the following:
+
+- Set `[rdi] = 0xdeadbeef00001337`
+- Set `[rsi] = 0xc0ffee0000`
+
+
+code:-
+
+```asm
+.intel_syntax noprefix
+.global _start
+._start:
+
+
+xor rax, rax
+xor rbx, rbx
+
+mov rax, 0xdeadbeef00001337
+mov rbx, 0xc0ffee0000
+
+mov [rdi], rax
+mov [rsi], rbx
+```
+
+
+## memory-sum
+
+Say we access the quad word at `0x1337`:
+
+`[0x1337] = 0x00000000deadbeef`
+The real way memory is laid out is byte by byte, little endian:
+
+```asm
+[0x1337] = 0xef
+[0x1337 + 1] = 0xbe
+[0x1337 + 2] = 0xad
+...
+[0x1337 + 7] = 0x00
+```
+
+Say you want the 5th byte from an address, you can access it like:
+
+```asm
+mov al, [address+4]
+```
+
+Remember, offsets start at 0.
+
+Perform the following:
+
+- Load two consecutive quad words from the address stored in rdi.
+- Calculate the sum of the previous steps' quad words.
+- Store the sum at the address in rsi.
