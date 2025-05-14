@@ -460,7 +460,7 @@ Perform the following:
 
 code:-
 
-```
+```asm
 mov rax, qword ptr [rdi]
 mov rbx, qword ptr [rdi+8]
 mov rcx, rax
@@ -472,13 +472,12 @@ flag: `pwn.college{cSG4DnR-21KLHldvq12AxD9YGwP.0lNwIDL2MDO0czW}`
 
 i tried this but this failed:-
 
-```
+```asm
 mov rax, qword ptr [rdi]
 mov rbx, qword ptr [rdi+8]
 mov [rsi], 0
 add [rsi], rax
 add [rsi], rbx
-
 ```
 
 NOTE: `requires that the memory at [rsi] is actually writable and properly aligned`, I was getting some similar error saying size was ambiguous
@@ -498,11 +497,10 @@ Using these instructions, take the top value of the stack, subtract rdi from it,
 
 code:-
 
-```
+```asm
 pop rbx
 sub rbx, rdi
 push rbx
-
 ```
 flag: `pwn.college{wqjtmVTImzpy7wRwA6WO5Ycz5Pq.01NwIDL2MDO0czW}`
 
@@ -517,12 +515,11 @@ Swap values in rdi and rsi.
 
 code:-
 
-```
+```asm
 push rdi
 push rsi
 pop rdi
 pop rsi
-
 ```
 
 flag: `pwn.college{MZO0igkLIXXS-TYPKkL8Aeqva4F.0FOwIDL2MDO0czW}`
@@ -533,13 +530,17 @@ Without using pop, please calculate the average of 4 consecutive quad words stor
 
 Hint:
 
-RSP+0x?? Quad Word A
-RSP+0x?? Quad Word B
-RSP+0x?? Quad Word C
-RSP Quad Word D
+- `RSP+0x?? Quad Word A`
+
+- `RSP+0x?? Quad Word B`
+
+- `RSP+0x?? Quad Word C`
+
+- `RSP Quad Word D`
 
 code:-
-```
+
+```asm
 mov rax, qword ptr [rsp]
 add rax, qword ptr [rsp+8]
 add rax, qword ptr [rsp+16]
@@ -565,10 +566,9 @@ In this level, we will ask you to do an absolute jump. Perform the following: Ju
 
 code:-
 
-```
+```asm
 mov rax, 0x403000
 jmp rax
-
 ```
 
 flag: `pwn.college{MteDTWwAQJiSeELdIcSGlzIHfO_.dVTM4MDL2MDO0czW}`
