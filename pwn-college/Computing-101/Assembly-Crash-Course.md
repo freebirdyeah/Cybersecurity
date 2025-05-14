@@ -456,3 +456,119 @@ Perform the following:
 - Load two consecutive quad words from the address stored in rdi.
 - Calculate the sum of the previous steps' quad words.
 - Store the sum at the address in rsi.
+
+
+code:-
+
+```
+mov rax, qword ptr [rdi]
+mov rbx, qword ptr [rdi+8]
+mov rcx, rax
+add rcx, rbx
+mov [rsi], rcx
+```
+
+flag: `pwn.college{cSG4DnR-21KLHldvq12AxD9YGwP.0lNwIDL2MDO0czW}`
+
+i tried this but this failed:-
+
+```
+mov rax, qword ptr [rdi]
+mov rbx, qword ptr [rdi+8]
+mov [rsi], 0
+add [rsi], rax
+add [rsi], rbx
+
+```
+
+NOTE: `requires that the memory at [rsi] is actually writable and properly aligned`, I was getting some similar error saying size was ambiguous
+
+
+## stack-subtraction
+
+Introduction to the stack! 
+
+1. LIFO memory structure, rsp points to the top of the stack
+2. push rax, makes space in stack (rsp-8) and `mov [rsp], rax`
+3. pop rbx, loads [rsp] to rbx and shrinks stack (rsp+8)
+4. stack grows downwards! thats why + for shrinking, - for making space
+
+
+Using these instructions, take the top value of the stack, subtract rdi from it, then put it back.
+
+code:-
+
+```
+pop rbx
+sub rbx, rdi
+push rbx
+
+```
+flag: `pwn.college{wqjtmVTImzpy7wRwA6WO5Ycz5Pq.01NwIDL2MDO0czW}`
+
+## swap-stack-values
+
+Using only the following instructions:-
+
+- push
+- pop
+
+Swap values in rdi and rsi.
+
+code:-
+
+```
+push rdi
+push rsi
+pop rdi
+pop rsi
+
+```
+
+flag: `pwn.college{MZO0igkLIXXS-TYPKkL8Aeqva4F.0FOwIDL2MDO0czW}`
+
+## average-stack-values
+
+Without using pop, please calculate the average of 4 consecutive quad words stored on the stack. Push the average on the stack.
+
+Hint:
+
+RSP+0x?? Quad Word A
+RSP+0x?? Quad Word B
+RSP+0x?? Quad Word C
+RSP Quad Word D
+
+code:-
+```
+mov rax, qword ptr [rsp]
+add rax, qword ptr [rsp+8]
+add rax, qword ptr [rsp+16]
+add rax, qword ptr [rsp+24]
+mov rdx, 0
+mov rcx, 4
+div rcx
+push rax
+```
+
+flag: `pwn.college{wNUk3NwHEMqPKvDoy2XoLoNLBC3.0VOwIDL2MDO0czW}`
+
+## absolute-jump
+
+two types of jump
+
+1. Unconditional: always trigger
+2. Conditional: conditional jumps
+
+In x86, absolute jumps (jump to a specific address) are accomplished by first putting the target address in a register reg, then doing jmp reg.
+
+In this level, we will ask you to do an absolute jump. Perform the following: Jump to the absolute address 0x403000.
+
+code:-
+
+```
+mov rax, 0x403000
+jmp rax
+
+```
+
+flag: `pwn.college{MteDTWwAQJiSeELdIcSGlzIHfO_.dVTM4MDL2MDO0czW}`
